@@ -175,6 +175,8 @@ body {
   .signOff{
     font-weight:bold !important;
     float:left !important;
+    margin-top: 10px;
+    color:#204065 !important;
   }
   .othours{
     width:10% !important;
@@ -182,3 +184,26 @@ body {
   .makeStyles-toolbar-2 {
     padding-right: 56px !important;
   }
+
+  .nav i{
+    color:#212529 !important;
+  }
+  .nav p{
+    color:#212529 !important;
+    font-size:13px;
+  }
+  .justify-content-end h5{
+    margin-bottom:0px !important;
+    /* width:20%; */
+  }
+
+  .timer{
+    width:100%;
+  }
+ .card-header{
+   border-bottom:1px solid #2040652e !important;
+ }
+ .card-body select{
+   border-radius: 0 !important;
+   width:130px !important;
+ }

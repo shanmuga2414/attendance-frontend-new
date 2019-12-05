@@ -35,7 +35,7 @@ class Login extends React.Component {
 
                 var user = jwt.verify(response.data.token, 'secret');
                 localStorage.setItem('currentUser', JSON.stringify(user));
-                that.props.history.push('/admin/dashboard');
+                that.props.history.push('/admin/attendance');
             } else {
                 this.setState({
                     errorMessage: response.message

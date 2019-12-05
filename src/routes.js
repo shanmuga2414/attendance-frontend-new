@@ -13,7 +13,7 @@ var dashRoutes = [
   },
   {
     path: "/attendance",
-    name: "ReportAttendance",
+    name: "Report Attendance",
     icon: "design_image",
     component: ReportAttendance,
     layout: "/admin"

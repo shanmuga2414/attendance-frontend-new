@@ -18,8 +18,10 @@ import {
   InputGroupAddon,
   Input
 } from "reactstrap";
+import Clock from 'react-live-clock';
 
 import routes from "routes.js";
+
 
 class Header extends React.Component {
   state = {
@@ -90,6 +92,11 @@ class Header extends React.Component {
   };
   componentDidMount() {
     window.addEventListener("resize", this.updateColor.bind(this));
+
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!currentUser) {
+      this.props.history.push('/');
+    }
   }
   componentDidUpdate(e) {
     if (
@@ -101,7 +108,16 @@ class Header extends React.Component {
       this.sidebarToggle.current.classList.toggle("toggled");
     }
   }
+
+  logout = () => {
+    localStorage.removeItem('currentUser');
+    localStorage.clear();
+    this.props.history.push('/');
+  }
   render() {
+    let currentDate = new Date();
+    let getMonth = currentDate.toString("MMM");
+    getMonth = getMonth.split(" ");
     return (
       // add or remove classes depending if we are on full-screen-maps page or not
       <Navbar
@@ -144,24 +160,23 @@ class Header extends React.Component {
             navbar
             className="justify-content-end"
           >
-            <form>
-              <InputGroup className="no-border">
-                <Input placeholder="Search..." />
-                <InputGroupAddon addonType="append">
-                  <InputGroupText>
-                    <i className="now-ui-icons ui-1_zoom-bold" />
-                  </InputGroupText>
-                </InputGroupAddon>
-              </InputGroup>
-            </form>
+            <h5 className="timer"> {currentDate.getDate() + '-' + (getMonth[1]) + '-' + currentDate.getFullYear()}  <Clock format={'HH:mm:ss'} ticking={true} timezone={'Asia/Singapore'} />
+            </h5>
+
             <Nav navbar>
               <NavItem>
-                <Link to="#pablo" className="nav-link">
-                  <i className="now-ui-icons media-2_sound-wave" />
-                  <p>
-                    <span className="d-lg-none d-md-block">Stats</span>
-                  </p>
-                </Link>
+                <form>
+
+                  <InputGroup className="no-border">
+                    <Input placeholder="Search..." />
+                    <InputGroupAddon addonType="append">
+                      <InputGroupText>
+                        <i className="now-ui-icons ui-1_zoom-bold" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                  </InputGroup>
+                </form>
+
               </NavItem>
               <Dropdown
                 nav
@@ -169,25 +184,24 @@ class Header extends React.Component {
                 toggle={e => this.dropdownToggle(e)}
               >
                 <DropdownToggle caret nav>
-                  <i className="now-ui-icons location_world" />
+                  <i className="now-ui-icons users_single-02" />
                   <p>
-                    <span className="d-lg-none d-md-block">Some Actions</span>
+                    <span className="d-lg-none d-md-block">User Profile</span>
                   </p>
                 </DropdownToggle>
                 <DropdownMenu right>
-                  <DropdownItem tag="a">Action</DropdownItem>
-                  <DropdownItem tag="a">Another Action</DropdownItem>
-                  <DropdownItem tag="a">Something else here</DropdownItem>
+                  <DropdownItem tag="a" onClick={this.logout}>Logout</DropdownItem>
+
                 </DropdownMenu>
               </Dropdown>
-              <NavItem>
+              {/* <NavItem>
                 <Link to="#pablo" className="nav-link">
                   <i className="now-ui-icons users_single-02" />
                   <p>
                     <span className="d-lg-none d-md-block">Account</span>
                   </p>
                 </Link>
-              </NavItem>
+              </NavItem> */}
             </Nav>
           </Collapse>
         </Container>
