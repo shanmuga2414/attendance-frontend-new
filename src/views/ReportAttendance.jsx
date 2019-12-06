@@ -9,7 +9,9 @@ import PanelHeader from "components/PanelHeader/PanelHeader.jsx";
 
 
 class ReportAttendance extends React.Component {
+  signIn = () => {
 
+  }
   render() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -78,7 +80,7 @@ class ReportAttendance extends React.Component {
                 <CardBody className="all-icons">
                   <Row>
                     <Col xs="8">Click the buttton for sign in  <br />
-                      <Button color="success" size="lg"><b>Sign In</b></Button>
+                      <Button color="success" size="lg" onClick={this.signIn}><b>Sign In</b></Button>
                     </Col>
                     <Col xs="4"></Col>
                   </Row>

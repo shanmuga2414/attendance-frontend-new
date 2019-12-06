@@ -1,6 +1,6 @@
 import React from 'react';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
-import { Button } from 'reactstrap';
+import { Button, Alert } from 'reactstrap';
 import bcrypt from 'bcryptjs';
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -30,7 +30,6 @@ class Register extends React.Component {
 
     handleSubmit = e => {
         // e.preventDefault();
-        console.log(this.props.saveUser);
         this.props.saveUser(this.state);
         const that = this;
         const password = this.state.password;
@@ -38,22 +37,22 @@ class Register extends React.Component {
         const hash = bcrypt.hashSync(password, salt);
 
         this.setState({
-            password: hash
+            password: hash,
+            confirmPassword: hash
         })
         axios({
             method: 'post',
             url: 'http://localhost:3030/employee/register',
             data: this.state
-        }).then(function (response, ) {
-            console.log(response);
+        }).then(function (response) {
             if (response.status === 200) {
                 that.props.history.push('/');
             } else {
-                this.setState({
-                    errorMessage: response.message
+                console.log(response.data.message)
+                that.setState({
+                    errorMessage: response.data.message
                 })
             }
-            console.log(this.state)
         })
             .catch(function (error) {
                 console.log(error);
@@ -63,14 +62,16 @@ class Register extends React.Component {
 
 
     render() {
-        console.log(this.state)
+
         return (
             <div className='regWrapper'>
                 <div className='form-wrapper'>
                     <h3 className="head-design">
                         <img className="site-logo" alt="HDB logo" src="https://www.hdb.gov.sg/cs/infoweb/img/site-logo-small.jpg" />
                     </h3>
-
+                    {this.state.errorMessage != "" &&
+                        <Alert color="danger">{this.state.errorMessage}</Alert>
+                    }
                     <AvForm onValidSubmit={this.handleSubmit}>
 
 

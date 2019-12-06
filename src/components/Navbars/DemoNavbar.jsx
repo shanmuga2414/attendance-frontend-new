@@ -111,6 +111,7 @@ class Header extends React.Component {
 
   logout = () => {
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('token');
     localStorage.clear();
     this.props.history.push('/');
   }

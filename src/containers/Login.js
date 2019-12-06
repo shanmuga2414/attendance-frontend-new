@@ -1,6 +1,6 @@
 import React from 'react';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
-import { Button } from 'reactstrap';
+import { Button, Alert } from 'reactstrap';
 // import bcrypt from 'bcryptjs';
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -30,23 +30,27 @@ class Login extends React.Component {
             url: 'http://localhost:3030/employee/login',
             data: this.state
         }).then(function (response) {
-            console.log(response);
+            // console.log('asdasdasd')
+            // console.log(response);
             if (response.status === 200) {
-
+                localStorage.setItem('token', response.data.token);
                 var user = jwt.verify(response.data.token, 'secret');
+                //   user.push(response.data.token)
                 localStorage.setItem('currentUser', JSON.stringify(user));
                 that.props.history.push('/admin/attendance');
             } else {
-                this.setState({
-                    errorMessage: response.message
+                console.log(response.data.message)
+                that.setState({
+                    errorMessage: response.data.message
                 })
-                console.log(this.state);
+
             }
 
-        })
-            .catch(function (error) {
-                console.log(error);
-            });
+
+        }).catch(function (error) {
+
+            console.log(error);
+        });
 
     };
 
@@ -60,7 +64,9 @@ class Login extends React.Component {
 
                         <img className="site-logo" alt="HDB logo" src="https://www.hdb.gov.sg/cs/infoweb/img/site-logo-small.jpg" />
                     </h3>
-                    <br />
+                    {this.state.errorMessage != "" &&
+                        <Alert color="danger">{this.state.errorMessage}</Alert>
+                    }
                     <AvForm onValidSubmit={this.handleSubmit}>
 
                         <AvField name="employeeId" label="User Name" onChange={this.handleChange} type="text" validate={{

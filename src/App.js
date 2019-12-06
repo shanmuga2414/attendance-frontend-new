@@ -18,10 +18,10 @@ class App extends Component {
             <Router>
                 <Switch>
                     <Route exact path="/" component={Login} />
-                    <Route exact path="/signup" component={withAuth(Register)} />
-
+                    {/* <Route exact path="/signup" component={withAuth(Register)} /> */}
+                    <Route exact path="/signup" component={Register} />
                     {/* <Route exact path="/profile" component={Profile} /> */}
-                    <AuthendicateRoute path="/admin" render={props => (<AdminLayout {...props} />)} />
+                    <Route path="/admin" render={props => (<AdminLayout {...props} />)} />
                     {/* <Route exact path="/sample" component={Sample} /> */}
                     <Route component={NoMatch} />
                 </Switch>

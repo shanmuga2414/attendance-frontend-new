@@ -207,3 +207,11 @@ body {
    border-radius: 0 !important;
    width:130px !important;
  }
+ label {
+  margin-bottom: 0.5em;
+  color: #343a40 !important;
+  font-weight: unset;
+}
+a {
+  color: #17a2b8 !important;
+}
