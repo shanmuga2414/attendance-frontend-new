@@ -42,7 +42,7 @@ class Register extends React.Component {
         })
         axios({
             method: 'post',
-            url: 'http://localhost:3030/employee/register',
+            url: 'http://localhost:8080/employee/register',
             data: this.state
         }).then(function (response) {
             if (response.status === 200) {
@@ -69,7 +69,7 @@ class Register extends React.Component {
                     <h3 className="head-design">
                         <img className="site-logo" alt="HDB logo" src="https://www.hdb.gov.sg/cs/infoweb/img/site-logo-small.jpg" />
                     </h3>
-                    {this.state.errorMessage != "" &&
+                    {this.state.errorMessage !== "" &&
                         <Alert color="danger">{this.state.errorMessage}</Alert>
                     }
                     <AvForm onValidSubmit={this.handleSubmit}>

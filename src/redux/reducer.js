@@ -1,9 +1,10 @@
-import { ADD_NEW_USER } from './constant'
+import { ADD_NEW_USER, FETCH_ATTENDANCE } from './constant';
 
 const initialState = {
     count: 0,
     isFetching: false,
-    user: {}
+    user: {},
+    fetchAttendance: {}
 }
 
 function reducer(state = initialState, action) {
@@ -13,6 +14,11 @@ function reducer(state = initialState, action) {
 
             return { ...state, user: action.payload }
 
+        case FETCH_ATTENDANCE:
+            return {
+                ...state,
+                fetchAttendance: action.payload.message
+            }
         default:
             return state
 

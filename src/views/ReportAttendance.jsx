@@ -1,16 +1,79 @@
 
 import React from "react";
-
+import axios from 'axios';
+import { connect } from 'react-redux';
 // reactstrap components
 import { Card, CardHeader, CardBody, Row, Col, Button, FormGroup, Label, Input } from "reactstrap";
-
+import date from 'date-and-time';
 // core components
+
+import { fetchAttendance } from '../redux/actions';
 import PanelHeader from "components/PanelHeader/PanelHeader.jsx";
 
 
-class ReportAttendance extends React.Component {
-  signIn = () => {
 
+
+
+class ReportAttendance extends React.Component {
+  constructor(props) {
+    super(props);
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const { name, team, employeeId, id } = currentUser;
+    this.state = {
+      icurrentDate: '',
+      ocurrentDate: '',
+      signInDisabled: false,
+      signOutDisabled: false,
+      employeeId: id
+
+    }
+  }
+
+  componentDidMount() {
+    const payload = {
+      post: this.state.employeeId
+    }
+    console.log(payload)
+    this.props.fetchAttendance(payload);
+  }
+  signIn = (e) => {
+    const now = new Date();
+    const ctime = date.format(now, 'YYYY/MM/DD HH:mm:ss');
+    let d = Date(Date.now());
+    console.log(ctime)
+    let cdate = d.toString()
+    this.setState({
+      icurrentDate: cdate,
+      signInDisabled: true
+    })
+    const that = this;
+    console.log(this.state)
+    axios({
+      method: 'post',
+      url: 'http://localhost:8080/employee/attendanceReport',
+      data: { employee: this.state.employeeId, signIn: ctime }
+    }).then(function (response) {
+      if (response.status === 200) {
+        console.log(response)
+      } else {
+        console.log(response.data.message)
+        that.setState({
+          errorMessage: response.data.message
+        })
+      }
+    })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  signOut = () => {
+    let d = Date(Date.now());
+    let cdate = d.toString()
+    this.setState({
+      ocurrentDate: cdate,
+      signOutDisabled: true
+    })
   }
   render() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -18,12 +81,15 @@ class ReportAttendance extends React.Component {
     const { name, team, employeeId } = currentUser;
 
     const options = [];
-    for (let i = 0.5; i < 8; i += 0.5) { options.push(i); }
+    for (let i = 0; i < 8; i += 0.5) { options.push(i); }
+
+
     return (
       <>
         <PanelHeader size="sm" />
         <div className="content">
           <Row>
+            {/* /   <h1>{JSON.stringify(this.props.userdetails)}</h1> */}
             <Col md={6}>
               <Card>
                 <CardHeader>
@@ -80,9 +146,21 @@ class ReportAttendance extends React.Component {
                 <CardBody className="all-icons">
                   <Row>
                     <Col xs="8">Click the buttton for sign in  <br />
-                      <Button color="success" size="lg" onClick={this.signIn}><b>Sign In</b></Button>
+                      <Button color="success" size="lg" disabled={this.state.signInDisabled} onClick={this.signIn}><b>Sign In</b></Button>
                     </Col>
-                    <Col xs="4"></Col>
+                    <Col xs="4">
+                      <span className="timeDisplay">
+                        {this.state.icurrentDate !== "" &&
+
+                          'Your Sign In time is'
+                        }
+                        <br />
+                        {this.state.icurrentDate !== "" &&
+
+                          <b> {this.state.icurrentDate} {this.state.signIn} </b>
+                        }
+                      </span>
+                    </Col>
                   </Row>
                 </CardBody>
               </Card>
@@ -111,9 +189,19 @@ class ReportAttendance extends React.Component {
                   <Row>&nbsp;</Row>
                   <Row>
                     <Col xs="8">Click the buttton for sign off <br />
-                      <Button color="danger" size="lg"><b>Sign out</b></Button>
+                      <Button color="danger" size="lg" disabled={this.state.signOutDisabled} onClick={this.signOut}><b>Sign out</b></Button>
                     </Col>
-                    <Col xs="4"></Col>
+                    <Col xs="4"><span className="timeDisplay">
+                      {this.state.ocurrentDate !== "" &&
+
+                        'Your Sign Out time is'
+                      }
+                      <br />
+                      {this.state.ocurrentDate !== "" &&
+
+                        <b> {this.state.ocurrentDate} </b>
+                      }
+                    </span></Col>
                   </Row>
                 </CardBody>
               </Card>
@@ -125,4 +213,12 @@ class ReportAttendance extends React.Component {
   }
 }
 
-export default ReportAttendance;
+
+
+const mapStateToProps = (state) => {
+  return {
+    userdetails: state.user
+  }
+}
+
+export default connect(mapStateToProps)(ReportAttendance);

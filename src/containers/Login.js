@@ -4,6 +4,8 @@ import { Button, Alert } from 'reactstrap';
 // import bcrypt from 'bcryptjs';
 import axios from 'axios';
 import { connect } from 'react-redux';
+
+
 var jwt = require('jsonwebtoken');
 
 class Login extends React.Component {
@@ -27,11 +29,9 @@ class Login extends React.Component {
         const that = this;
         axios({
             method: 'post',
-            url: 'http://localhost:3030/employee/login',
+            url: 'http://localhost:8080/employee/login',
             data: this.state
         }).then(function (response) {
-            // console.log('asdasdasd')
-            // console.log(response);
             if (response.status === 200) {
                 localStorage.setItem('token', response.data.token);
                 var user = jwt.verify(response.data.token, 'secret');
@@ -64,7 +64,7 @@ class Login extends React.Component {
 
                         <img className="site-logo" alt="HDB logo" src="https://www.hdb.gov.sg/cs/infoweb/img/site-logo-small.jpg" />
                     </h3>
-                    {this.state.errorMessage != "" &&
+                    {this.state.errorMessage !== "" &&
                         <Alert color="danger">{this.state.errorMessage}</Alert>
                     }
                     <AvForm onValidSubmit={this.handleSubmit}>
