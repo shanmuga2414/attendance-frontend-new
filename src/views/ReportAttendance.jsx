@@ -2,15 +2,14 @@
 import React from "react";
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router'
 // reactstrap components
 import { Card, CardHeader, CardBody, Row, Col, Button, FormGroup, Label, Input } from "reactstrap";
 import date from 'date-and-time';
 // core components
 
-import { fetchAttendance } from '../redux/actions';
+// import { fetchAttendance } from '../redux/actions';
 import PanelHeader from "components/PanelHeader/PanelHeader.jsx";
-
-
 
 
 
@@ -34,7 +33,7 @@ class ReportAttendance extends React.Component {
       post: this.state.employeeId
     }
     console.log(payload)
-    this.props.fetchAttendance(payload);
+    // this.props.fetchAttendance(payload);
   }
   signIn = (e) => {
     const now = new Date();
@@ -76,6 +75,9 @@ class ReportAttendance extends React.Component {
     })
   }
   render() {
+    // const { attendanceReports } = this.props;
+    console.log(this.props);
+
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     const { name, team, employeeId } = currentUser;
@@ -213,12 +215,19 @@ class ReportAttendance extends React.Component {
   }
 }
 
+export default ReportAttendance;
+// const mapStateToProps = (state, ownProps) => {
+//   return {
+//     post: state.post,
+//     attendanceReports: state.AttendanceReports
+//   }
+// }
+
+// const mapDispatchToProps = (dispatch, ownProps) => {
+//   return {
+//     fetchAttendance: (payload, history) => dispatch(fetchAttendance(payload, history))
+//   }
+// }
 
 
-const mapStateToProps = (state) => {
-  return {
-    userdetails: state.user
-  }
-}
-
-export default connect(mapStateToProps)(ReportAttendance);
+// export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ReportAttendance));

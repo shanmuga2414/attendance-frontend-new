@@ -7,14 +7,17 @@ export const saveUser = payload => {
     }
 }
 
-export const fetchAttendance = (data, history) => {
-    return (dispatch, getState) => {
-        //    console.log(getState());
-        fetch('https://jsonplaceholder.typicode.com/posts')
-            .then(res => res.json())
-            .then(data => dispatch({
-                type: FETCH_ATTENDANCE,
-                payload: data
-            }))
-    }
+export const fetchAttendance = (data, history) => (dispatch) => {
+    fetch(`http://localhost:8080/employee/fetchAttendance/${data.post}`, {
+        method: 'get',
+        headers: {
+            'content-type': 'application/json'
+        }
+    })
+        .then(res => console.log(res)//res.json()
+        )
+        .then(data => dispatch({
+            type: FETCH_ATTENDANCE,
+            payload: data
+        }))
 }
