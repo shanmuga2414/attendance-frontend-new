@@ -9,7 +9,7 @@ export const saveUser = payload => {
 
 export const fetchAttendance = (data, history) => (dispatch) => {
     fetch(`http://localhost:8080/employee/fetchAttendance/${data.post}`, {
-        method: 'get',
+        method: 'post',
         headers: {
             'content-type': 'application/json'
         }

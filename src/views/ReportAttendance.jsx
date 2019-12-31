@@ -33,7 +33,7 @@ class ReportAttendance extends React.Component {
       post: this.state.employeeId
     }
     console.log(payload)
-    // this.props.fetchAttendance(payload);
+    //this.props.fetchAttendance(payload);
   }
   signIn = (e) => {
     const now = new Date();
